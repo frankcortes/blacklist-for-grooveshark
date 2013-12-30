@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>blacklist-api.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="blacklist-api.html">
+                blacklist-api.js
+              </a>
+            
+              
+              <a class="source" href="blacklist-ui.html">
+                blacklist-ui.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>blacklist-api.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>;(<span class="function"><span class="keyword">function</span><span class="params">(G, _)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="blacklist-model">BlackList Model</h2>
+<p>I&#39;d prefer to use <code>Backbone.LocalStorage</code> with <code>Backbone.Model</code>, but for some reason the method `Backbone.Sync is not working in
+Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> BlackList = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+		<span class="keyword">this</span>.blackList = localStorage.blackList &amp;&amp; JSON.parse(localStorage.blackList);
+		<span class="keyword">this</span>.blackList = <span class="keyword">this</span>.blackList || [];
+	};
+
+	<span class="keyword">var</span> blackListMethods = {
+		get: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+			<span class="keyword">return</span> <span class="keyword">this</span>.blackList;
+		},
+		add: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
+			<span class="keyword">if</span>(!<span class="keyword">this</span>.contains(song)) {
+				<span class="keyword">this</span>.blackList.push(song.songID);
+			}
+			<span class="keyword">this</span>.sync();
+		},
+		remove: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
+			<span class="keyword">if</span>(<span class="keyword">this</span>.contains(song)) {
+				<span class="keyword">this</span>.blackList = _.without(<span class="keyword">this</span>.blackList, song.songID);
+			}
+			<span class="keyword">this</span>.sync();	
+		},
+		contains: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
+			<span class="keyword">return</span> <span class="keyword">this</span>.blackList.indexOf(song.songID) !== -<span class="number">1</span>;
+		},
+		sync: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+			localStorage.blackList = JSON.stringify(<span class="keyword">this</span>.blackList);
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>A more elegant way to add these methods to the prototype</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	_.extend(BlackList.prototype, blackListMethods);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="blacklist-daemon">BlackList Daemon</h2>
+<p>This class is used to apply the blacklist logic.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> BlackListDaemon = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+			<span class="keyword">this</span>.blackList = <span class="keyword">new</span> BlackList();
+			G.setSongStatusCallback(_.bind(<span class="keyword">this</span>.filterBlackList, <span class="keyword">this</span>));
+	};
+
+	<span class="keyword">var</span> blackListDaemonMethods = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>This function is used to verify if the current song is inside of the black list or not.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		filterBlackList: <span class="function"><span class="keyword">function</span><span class="params">(currentSong)</span> {</span>
+			<span class="keyword">var</span> song = currentSong.song,
+				status = currentSong.status;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Verify if is inside of the black list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="keyword">if</span>(song &amp;&amp; status === <span class="string">"loading"</span> &amp;&amp; <span class="keyword">this</span>.blackList.contains(song)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Remove of the execution inmediately!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				G.removeCurrentSongFromQueue();
+			}
+		}
+	};
+
+	_.extend(BlackListDaemon.prototype, blackListDaemonMethods);
+
+
+	<span class="keyword">var</span> BlackListDaemon = <span class="keyword">new</span> BlackListDaemon();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h4 id="external-methods-for-blacklist-grooveshark">External methods for Blacklist Grooveshark</h4>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> externalPublicApi = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <ul>
+<li>Add a song in the black list</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		addSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span><span class="params">(songID)</span> {</span>
+			<span class="keyword">this</span>.blackList.add({ <span class="string">"songID"</span>: songID });
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <ul>
+<li>What songs did I ignore?</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getSongsInBlackList: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+			<span class="keyword">return</span> <span class="keyword">this</span>.blackList.get();
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <ul>
+<li>Remove a song to the black list</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		removeSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span><span class="params">(songID)</span> {</span>
+			<span class="keyword">this</span>.blackList.remove({ <span class="string">"songID"</span>: songID });
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>add these elements to Grooveshark API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	_.each(externalPublicApi, <span class="function"><span class="keyword">function</span><span class="params">(func, funcName)</span> {</span>
+		externalPublicApi[funcName] = _.bind(func, BlackListDaemon);
+	});
+	_.extend(Grooveshark, externalPublicApi);
+})(Grooveshark, _);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

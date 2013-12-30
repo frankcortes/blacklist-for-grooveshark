@@ -1,10 +1,12 @@
 ;(function(G, _, $){
+	//All staff is initialized in this function.
 	var BlackListUI = function() {
 		this.initializeButtons();
 		this.initializeEvents();
 	};
 
 	var blackListUIMethods = {
+		//Initialize the UI elements
 		initializeButtons: function() {
 			var self = this;
 			$(".module-row.song").each(function(){
@@ -15,12 +17,13 @@
 			    console.log($buttons);
 			    $groupButtons.prepend("<a class=\"btn btn-small btn-icon-only banned song-row-banned\"  data-song-id=\"" + songID + "\"><i class=\"icon ex icon-ex-gray-flat\"></i></a>");
 			    $buttons.css("width", "120px !important");
-			    //If this song is banned, the class is another
+			    //If this song is banned, the class is the other one
 			    if(bannedList.indexOf(songID) !== -1) {
 			    	self._toogleButtons($buttons.find(".song-row-banned"));		    	
 			    }
 			});
 		},
+		//Initialize the events that UI needs
 		initializeEvents: function() {
 			var self = this;
 			//Banned buttons
@@ -41,6 +44,7 @@
 				self._toogleButtons($(this));
 			});
 		},
+		//Auxiliar function to modify the button apparence
 		_toogleButtons: function($button) {
 			var $banIcon = $button.find(".icon"),
 				classToRemove = $banIcon.hasClass("icon-ex-gray-flat") ? "icon-ex-gray-flat" : "icon-ex-gray-outline",

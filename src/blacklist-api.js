@@ -1,18 +1,11 @@
 ;(function(G, _){
 
-	//just for development
-	var list = [];
-	/* Some examples for list values
-	[
-		39897777, //wake me up
-		39582266 //tsunami
-	];
-	*/
-	//I'd prefer to use Backbone.LocalStorage with Backbone.Model, but for any reason the method _Backbone.Sync_ is not working in
+	//##BlackList Model
+	//I'd prefer to use `Backbone.LocalStorage` with `Backbone.Model`, but for some reason the method `Backbone.Sync is not working in
 	//Grooveshark page :S. Futhermore, it's simpler than use a collection.
 	var BlackList = function() {
 		this.blackList = localStorage.blackList && JSON.parse(localStorage.blackList);
-		this.blackList = this.blackList || list;
+		this.blackList = this.blackList || [];
 	};
 
 	var blackListMethods = {
@@ -41,9 +34,9 @@
 	//A more elegant way to add these methods to the prototype
 	_.extend(BlackList.prototype, blackListMethods);
 
+	//##BlackList Daemon
 	//This class is used to apply the blacklist logic.
 	var BlackListDaemon = function() {
-			console.log("%c created class!","background-color: yellow;");
 			this.blackList = new BlackList();
 			G.setSongStatusCallback(_.bind(this.filterBlackList, this));
 	};
@@ -53,11 +46,10 @@
 		filterBlackList: function(currentSong) {
 			var song = currentSong.song,
 				status = currentSong.status;
-			//verify if is inside of the black list
+			//Verify if is inside of the black list
 			if(song && status === "loading" && this.blackList.contains(song)) {
 				//Remove of the execution inmediately!
 				G.removeCurrentSongFromQueue();
-				console.log("%c removed the song %s in event %s", "background-color: yellow", song.songName, status);
 			}
 		}
 	};
@@ -67,13 +59,17 @@
 
 	var BlackListDaemon = new BlackListDaemon();
 
+	//####External methods for Blacklist Grooveshark
 	var externalPublicApi = {
+		//- Add a song in the black list
 		addSongInBlackListFromSongID: function(songID) {
 			this.blackList.add({ "songID": songID });
 		},
+		//- What songs did I ignore?
 		getSongsInBlackList: function() {
 			return this.blackList.get();
 		},
+		//- Remove a song to the black list
 		removeSongInBlackListFromSongID: function(songID) {
 			this.blackList.remove({ "songID": songID });
 		}
