@@ -1,0 +1,143 @@
+;(function(G, _){
+
+	//just for development
+	var list = [];
+	/* Some examples for list values
+	[
+		39897777, //wake me up
+		39582266 //tsunami
+	];
+	*/
+	//I'd prefer to use Backbone.LocalStorage with Backbone.Model, but for any reason the method _Backbone.Sync_ is not working in
+	//Grooveshark page :S. Futhermore, it's simpler than use a collection.
+	var BlackList = function() {
+		this.blackList = localStorage.blackList && JSON.parse(localStorage.blackList);
+		this.blackList = this.blackList || list;
+	};
+
+	var blackListMethods = {
+		get: function() {
+			return this.blackList;
+		},
+		add: function(song) {
+			if(!this.contains(song)) {
+				this.blackList.push(song.songID);
+			}
+			this.sync();
+		},
+		remove: function(song) {
+			if(this.contains(song)) {
+				this.blackList = _.without(this.blackList, song.songID);
+			}
+			this.sync();	
+		},
+		contains: function(song) {
+			return this.blackList.indexOf(song.songID) !== -1;
+		},
+		sync: function() {
+			localStorage.blackList = JSON.stringify(this.blackList);
+		}
+	};
+	//A more elegant way to add these methods to the prototype
+	_.extend(BlackList.prototype, blackListMethods);
+
+	//This class is used to apply the blacklist logic.
+	var BlackListDaemon = function() {
+			console.log("%c created class!","background-color: yellow;");
+			this.blackList = new BlackList();
+			G.setSongStatusCallback(_.bind(this.filterBlackList, this));
+	};
+
+	var blackListDaemonMethods = {
+		//This function is used to verify if the current song is inside of the black list or not.
+		filterBlackList: function(currentSong) {
+			var song = currentSong.song,
+				status = currentSong.status;
+			//verify if is inside of the black list
+			if(song && status === "loading" && this.blackList.contains(song)) {
+				//Remove of the execution inmediately!
+				G.removeCurrentSongFromQueue();
+				console.log("%c removed the song %s in event %s", "background-color: yellow", song.songName, status);
+			}
+		}
+	};
+
+	_.extend(BlackListDaemon.prototype, blackListDaemonMethods);
+
+
+	var BlackListDaemon = new BlackListDaemon();
+
+	var externalPublicApi = {
+		addSongInBlackListFromSongID: function(songID) {
+			this.blackList.add({ "songID": songID });
+		},
+		getSongsInBlackList: function() {
+			return this.blackList.get();
+		},
+		removeSongInBlackListFromSongID: function(songID) {
+			this.blackList.remove({ "songID": songID });
+		}
+	};
+	//add these elements to Grooveshark API
+	_.each(externalPublicApi, function(func, funcName) {
+		externalPublicApi[funcName] = _.bind(func, BlackListDaemon);
+	});
+	_.extend(Grooveshark, externalPublicApi);
+})(Grooveshark, _);
+;(function(G, _, $){
+	var BlackListUI = function() {
+		this.initializeButtons();
+		this.initializeEvents();
+	};
+
+	var blackListUIMethods = {
+		initializeButtons: function() {
+			var self = this;
+			$(".module-row.song").each(function(){
+			    var $buttons = $(this).find(".row-actions.secondary"),
+			        $groupButtons = $buttons.find(".btn-group"),
+			        songID = $groupButtons.children("a").first().data("song-id"),
+			        bannedList = Grooveshark.getSongsInBlackList();
+			    console.log($buttons);
+			    $groupButtons.prepend("<a class=\"btn btn-small btn-icon-only banned song-row-banned\"  data-song-id=\"" + songID + "\"><i class=\"icon ex icon-ex-gray-flat\"></i></a>");
+			    $buttons.css("width", "120px !important");
+			    //If this song is banned, the class is another
+			    if(bannedList.indexOf(songID) !== -1) {
+			    	self._toogleButtons($buttons.find(".song-row-banned"));		    	
+			    }
+			});
+		},
+		initializeEvents: function() {
+			var self = this;
+			//Banned buttons
+			$(".song-row-banned").click(function() {
+				var songID = $(this).data("song-id"),
+					$banIcon = $(this).find(".icon"),
+					bannedAction = $banIcon.hasClass("icon-ex-gray-flat") ? "remove" : "Add";
+				if(bannedAction === "remove") {
+					if(typeof G.addSongInBlackListFromSongID !== "undefined") {
+						G.addSongInBlackListFromSongID(songID);
+					}
+				}
+				else {
+					if(typeof G.removeSongInBlackListFromSongID !== "undefined") {
+						G.removeSongInBlackListFromSongID(songID);
+					}
+				}
+				self._toogleButtons($(this));
+			});
+		},
+		_toogleButtons: function($button) {
+			var $banIcon = $button.find(".icon"),
+				classToRemove = $banIcon.hasClass("icon-ex-gray-flat") ? "icon-ex-gray-flat" : "icon-ex-gray-outline",
+				classToAdd = $banIcon.hasClass("icon-ex-gray-flat") ? "icon-ex-gray-outline" : "icon-ex-gray-flat";
+			
+			$banIcon.removeClass(classToRemove);
+			$banIcon.addClass(classToAdd);
+		}
+	};
+
+	_.extend(BlackListUI.prototype, blackListUIMethods);
+
+	var blackListUI = new BlackListUI();
+})(Grooveshark, _, jQuery);
