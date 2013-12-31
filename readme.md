@@ -7,7 +7,9 @@ When I'm playing random playlists (like popular, or random songs), sometimes I w
 ##Use
 
 1) Copy this link like a bookmarklet:
-``
+```
+javascript:(function() %7B%0A%09var scriptDep %3D document.createElement("script")%3B%0A%09scriptDep.src %3D "https%3A%2F%2Fraw.github.com%2Ffrankcortes%2Fblacklist-for-grooveshark%2Fmaster%2Fdist%2Fblacklist-grooveshark.min.js"%3B%0A%09document.body.appendChild(scriptDep)%3B%0A%7D)()%3B
+```
 
 2) Go www.grooveshark.com, for instance in your own playlist or popular list.
 
