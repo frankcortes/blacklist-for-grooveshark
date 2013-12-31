@@ -327,6 +327,24 @@ a.buttons:hover {
 	text-decoration: none;
 }
 
+a.bookmarklet {
+  list-style-type: none;
+  width:135px;
+  height:15px;
+  margin-bottom: 12px;
+  line-height: 1em;
+  padding: 6px 6px 6px 7px;
+  background: #545454;
+  border:1px solid black;
+  color: white;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: bold;
+}
+
+a.bookmarklet:hover {
+  text-decoration: none;
+  background: #636363;
+}
 
 /* Section - for main page content */
 
