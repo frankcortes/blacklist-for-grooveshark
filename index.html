@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Blacklist-for-grooveshark by frankcortes</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Blacklist-for-grooveshark</h1>
+        <p class="header">Ban the songs you don't want to listen in Grooveshark</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/frankcortes/blacklist-for-grooveshark/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/frankcortes/blacklist-for-grooveshark/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/frankcortes/blacklist-for-grooveshark">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/frankcortes">frankcortes</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="blacklist-for-grooveshark" class="anchor" href="#blacklist-for-grooveshark"><span class="octicon octicon-link"></span></a>Blacklist for Grooveshark</h1>
+
+<h2>
+<a name="why" class="anchor" href="#why"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<p>When I'm playing random playlists (like popular, or random songs), sometimes I would avoid several songs I don't like too much. For this reason I created this bookmarklet. You can ban the songs you don't want to listen and shift to the next song automagically.</p>
+
+<h2>
+<a name="use" class="anchor" href="#use"><span class="octicon octicon-link"></span></a>Use</h2>
+
+<p>1) Copy this link like a bookmarklet:</p>
+
+<pre><code>javascript:(function() %7B%0A%09var scriptDep %3D document.createElement("script")%3B%0A%09scriptDep.src %3D "https%3A%2F%2Fraw.github.com%2Ffrankcortes%2Fblacklist-for-grooveshark%2Fmaster%2Fdist%2Fblacklist-grooveshark.min.js"%3B%0A%09document.body.appendChild(scriptDep)%3B%0A%7D)()%3B
+</code></pre>
+
+<p>2) Go <a href="http://www.grooveshark.com">www.grooveshark.com</a>, for instance in your own playlist or popular list.</p>
+
+<p>3) Click in the bookmarklet.</p>
+
+<p>4) A new button with "x" icon appears in every song like this</p>
+
+<p><img src="img/buttons.png" alt="new button"></p>
+
+<p>5) ???</p>
+
+<p>6) Profit!!!</p>
+
+<h2>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works</h2>
+
+<p>The plugin is split into different files, <em>blacklist-api.js</em> and <em>blacklist-ui.js</em>. The first one implements the required methods and the other creates a interface to use them.</p>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>This plugin extends <code>window.Grooveshark</code> object) (<a href="http://developers.grooveshark.com/docs/js_api/">here the public API</a>) with a new methods, so another developers can use the blacklist-api to develop another plugins.</p>
+
+<ul>
+<li>addSongInBlackListFromSongID</li>
+<li>getSongsInBlackList</li>
+<li>removeSongInBlackListFromSongID</li>
+</ul><h2>
+<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h2>
+
+<h3>
+<a name="why-are-you-using-underscorelodash-in-your-code" class="anchor" href="#why-are-you-using-underscorelodash-in-your-code"><span class="octicon octicon-link"></span></a>Why are you using Underscore/Lodash in your code?</h3>
+
+<p>I'm taking advantage of some libraries have been loaded for Grooveshark.com,like Lodash or jQuery are. I know they are using require.js and Backbone.js, although I don't want to use its versions - concretely they aren't using all the Backbone components.</p>
+
+<h3>
+<a name="are-you-using-my-account-to-save-the-blacklist" class="anchor" href="#are-you-using-my-account-to-save-the-blacklist"><span class="octicon octicon-link"></span></a>Are you using my account to save the blacklist?</h3>
+
+<p>Nope. I'm using your <code>window.localStorage</code> object to store the data. Don't worry: This information is just inside in your browser and it will never share with anyone.</p>
+
+<h3>
+<a name="using-a-bookmarklet-all-time-is-a-bit-tricky-could-you-implement-a-chromeff-extension-please" class="anchor" href="#using-a-bookmarklet-all-time-is-a-bit-tricky-could-you-implement-a-chromeff-extension-please"><span class="octicon octicon-link"></span></a>Using a bookmarklet all time is a bit tricky. Could you implement a Chrome/FF extension, please?</h3>
+
+<p>Well, I will try this if I have enough time in the near future. Feel free to implement this doing a pull request or creating another repo using the <em>blacklist-api.js</em>.</p>
+
+<h2>
+<a name="the-mit-license-mit" class="anchor" href="#the-mit-license-mit"><span class="octicon octicon-link"></span></a>The MIT License (MIT)</h2>
+
+<p>Copyright (c)  </p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
