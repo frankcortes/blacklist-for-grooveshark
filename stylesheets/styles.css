@@ -1,34 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Arvo:400,700,400italic);
-
-/*--------------------- Typography ----------------------------*/
-
-@font-face {
-    font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-ExtraBold.ttf') format('truetype');
-    font-weight: bolder;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-Italic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-}
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,700);
 
 /* MeyerWeb Reset */
 
