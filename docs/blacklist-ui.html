@@ -51,7 +51,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>;(<span class="function"><span class="keyword">function</span><span class="params">(G, _, $)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>;
+(<span class="function"><span class="keyword">function</span> <span class="params">(G, _, $)</span> {</span></pre></div></div>
             
         </li>
         
@@ -66,12 +67,10 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> BlackListUI = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-		<span class="keyword">this</span>.initializeButtons();
-		<span class="keyword">this</span>.initializeEvents();
-	};
-
-	<span class="keyword">var</span> blackListUIMethods = {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> BlackListUI = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">this</span>.initializeButtons();
+        <span class="keyword">this</span>.initializeEvents();
+    };</pre></div></div>
             
         </li>
         
@@ -82,20 +81,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Initialize the UI elements</p>
+              <p>Css classes used to display the ban button.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		initializeButtons: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			<span class="keyword">var</span> self = <span class="keyword">this</span>;
-			$(<span class="string">".module-row.song"</span>).each(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-			    <span class="keyword">var</span> $buttons = $(<span class="keyword">this</span>).find(<span class="string">".row-actions.secondary"</span>),
-			        $groupButtons = $buttons.find(<span class="string">".btn-group"</span>),
-			        songID = $groupButtons.children(<span class="string">"a"</span>).first().data(<span class="string">"song-id"</span>),
-			        bannedList = Grooveshark.getSongsInBlackList();
-			    console.log($buttons);
-			    $groupButtons.prepend(<span class="string">"&lt;a class=\"btn btn-small btn-icon-only banned song-row-banned\"  data-song-id=\""</span> + songID + <span class="string">"\"&gt;&lt;i class=\"icon ex icon-ex-gray-flat\"&gt;&lt;/i&gt;&lt;/a&gt;"</span>);
-			    $buttons.css(<span class="string">"width"</span>, <span class="string">"120px !important"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> iconBanClass = <span class="string">"icon-ex-gray-flat"</span>,
+        iconAllowClass = <span class="string">"icon-ex-gray-outline"</span>;
+
+    <span class="keyword">var</span> blackListUIMethods = {</pre></div></div>
             
         </li>
         
@@ -106,15 +99,23 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>If this song is banned, the class is the other one</p>
+              <p>Initialize the UI elements</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			    <span class="keyword">if</span>(bannedList.indexOf(songID) !== -<span class="number">1</span>) {
-			    	self._toogleButtons($buttons.find(<span class="string">".song-row-banned"</span>));		    	
-			    }
-			});
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        initializeButtons: function () {
+            var self = this;
+            $(".module-row.song").each(function () {
+                var $buttons = $(this).find(".row-actions.secondary"),
+                    $groupButtons = $buttons.find(".btn-group"),
+                    songID = $groupButtons.children("a").first().data("song-id"),
+                    bannedList = Grooveshark.getSongsInBlackList();
+                console.log($buttons);
+                $groupButtons.prepend("&lt;a 
+                    class=\"btn btn-small btn-icon-only banned song-row-banned\"\
+                    data-song-id=\"" + songID + "\"&gt;\
+                    &lt;i class=\"icon ex " + iconBanClass + "\"&gt;&lt;/i&gt;&lt;/a&gt;");
+                $buttons.css("width", "120px !important");</pre></div></div>
             
         </li>
         
@@ -125,12 +126,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Initialize the events that UI needs</p>
+              <p>If this song is banned, the class is the other one</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		initializeEvents: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			<span class="keyword">var</span> self = <span class="keyword">this</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (bannedList.indexOf(songID) !== -<span class="number">1</span>) {
+                    self._toogleButtons($buttons.find(<span class="string">".song-row-banned"</span>));
+                }
+            });
+        },</pre></div></div>
             
         </li>
         
@@ -141,27 +145,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Banned buttons</p>
+              <p>Initialize the events that UI needs</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			$(<span class="string">".song-row-banned"</span>).click(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-				<span class="keyword">var</span> songID = $(<span class="keyword">this</span>).data(<span class="string">"song-id"</span>),
-					$banIcon = $(<span class="keyword">this</span>).find(<span class="string">".icon"</span>),
-					bannedAction = $banIcon.hasClass(<span class="string">"icon-ex-gray-flat"</span>) ? <span class="string">"remove"</span> : <span class="string">"Add"</span>;
-				<span class="keyword">if</span>(bannedAction === <span class="string">"remove"</span>) {
-					<span class="keyword">if</span>(<span class="keyword">typeof</span> G.addSongInBlackListFromSongID !== <span class="string">"undefined"</span>) {
-						G.addSongInBlackListFromSongID(songID);
-					}
-				}
-				<span class="keyword">else</span> {
-					<span class="keyword">if</span>(<span class="keyword">typeof</span> G.removeSongInBlackListFromSongID !== <span class="string">"undefined"</span>) {
-						G.removeSongInBlackListFromSongID(songID);
-					}
-				}
-				self._toogleButtons($(<span class="keyword">this</span>));
-			});
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        initializeEvents: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            <span class="keyword">var</span> self = <span class="keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -172,23 +161,53 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
+              <p>Banned buttons</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            $(<span class="string">".song-row-banned"</span>).click(<span class="function"><span class="keyword">function</span> <span class="params">()</span>  {</span>
+                <span class="keyword">var</span> songID = $(<span class="keyword">this</span>).data(<span class="string">"song-id"</span>),
+                    $banIcon = $(<span class="keyword">this</span>).find(<span class="string">".icon"</span>),
+                    bannedAction = $banIcon.hasClass(iconBanClass) ? <span class="string">"remove"</span> : <span class="string">"Add"</span>;
+                <span class="keyword">if</span> (bannedAction === <span class="string">"remove"</span>) {
+                    <span class="keyword">if</span> (<span class="keyword">typeof</span> G.addSongInBlackListFromSongID !== <span class="string">"undefined"</span>) {
+                        G.addSongInBlackListFromSongID(songID);
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="keyword">if</span> (<span class="keyword">typeof</span> G.removeSongInBlackListFromSongID !== <span class="string">"undefined"</span>) {
+                        G.removeSongInBlackListFromSongID(songID);
+                    }
+                }
+                self._toogleButtons($(<span class="keyword">this</span>));
+            });
+        },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
               <p>Auxiliar function to modify the button apparence</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_toogleButtons: <span class="function"><span class="keyword">function</span><span class="params">($button)</span> {</span>
-			<span class="keyword">var</span> $banIcon = $button.find(<span class="string">".icon"</span>),
-				classToRemove = $banIcon.hasClass(<span class="string">"icon-ex-gray-flat"</span>) ? <span class="string">"icon-ex-gray-flat"</span> : <span class="string">"icon-ex-gray-outline"</span>,
-				classToAdd = $banIcon.hasClass(<span class="string">"icon-ex-gray-flat"</span>) ? <span class="string">"icon-ex-gray-outline"</span> : <span class="string">"icon-ex-gray-flat"</span>;
-			
-			$banIcon.removeClass(classToRemove);
-			$banIcon.addClass(classToAdd);
-		}
-	};
+            <div class="content"><div class='highlight'><pre>        _toogleButtons: <span class="function"><span class="keyword">function</span> <span class="params">($button)</span> {</span>
+            <span class="keyword">var</span> $banIcon = $button.find(<span class="string">".icon"</span>),
+                classToRemove = $banIcon.hasClass(iconBanClass) ? iconBanClass : iconAllowClass,
+                classToAdd = $banIcon.hasClass(iconAllowClass) ? iconAllowClass : iconBanClass;
 
-	_.extend(BlackListUI.prototype, blackListUIMethods);
+            $banIcon.removeClass(classToRemove);
+            $banIcon.addClass(classToAdd);
+        }
+    };
 
-	<span class="keyword">var</span> blackListUI = <span class="keyword">new</span> BlackListUI();
+    _.extend(BlackListUI.prototype, blackListUIMethods);
+
+    <span class="keyword">var</span> blackListUI = <span class="keyword">new</span> BlackListUI();
 })(Grooveshark, _, jQuery);</pre></div></div>
             
         </li>

@@ -51,7 +51,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>;(<span class="function"><span class="keyword">function</span><span class="params">(G, _)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>;
+(<span class="function"><span class="keyword">function</span> <span class="params">(G, _)</span> {</span></pre></div></div>
             
         </li>
         
@@ -68,34 +69,34 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> BlackList = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-		<span class="keyword">this</span>.blackList = localStorage.blackList &amp;&amp; JSON.parse(localStorage.blackList);
-		<span class="keyword">this</span>.blackList = <span class="keyword">this</span>.blackList || [];
-	};
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> BlackList = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">this</span>.blackList = localStorage.blackList &amp;&amp; JSON.parse(localStorage.blackList);
+        <span class="keyword">this</span>.blackList = <span class="keyword">this</span>.blackList ||  [];
+    };
 
-	<span class="keyword">var</span> blackListMethods = {
-		get: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			<span class="keyword">return</span> <span class="keyword">this</span>.blackList;
-		},
-		add: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
-			<span class="keyword">if</span>(!<span class="keyword">this</span>.contains(song)) {
-				<span class="keyword">this</span>.blackList.push(song.songID);
-			}
-			<span class="keyword">this</span>.sync();
-		},
-		remove: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
-			<span class="keyword">if</span>(<span class="keyword">this</span>.contains(song)) {
-				<span class="keyword">this</span>.blackList = _.without(<span class="keyword">this</span>.blackList, song.songID);
-			}
-			<span class="keyword">this</span>.sync();	
-		},
-		contains: <span class="function"><span class="keyword">function</span><span class="params">(song)</span> {</span>
-			<span class="keyword">return</span> <span class="keyword">this</span>.blackList.indexOf(song.songID) !== -<span class="number">1</span>;
-		},
-		sync: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			localStorage.blackList = JSON.stringify(<span class="keyword">this</span>.blackList);
-		}
-	};</pre></div></div>
+    <span class="keyword">var</span> blackListMethods = {
+        get: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.blackList;
+        },
+        add: <span class="function"><span class="keyword">function</span> <span class="params">(song)</span> {</span>
+            <span class="keyword">if</span> (!<span class="keyword">this</span>.contains(song)) {
+                <span class="keyword">this</span>.blackList.push(song.songID);
+            }
+            <span class="keyword">this</span>.sync();
+        },
+        remove: <span class="function"><span class="keyword">function</span> <span class="params">(song)</span> {</span>
+            <span class="keyword">if</span> (<span class="keyword">this</span>.contains(song)) {
+                <span class="keyword">this</span>.blackList = _.without(<span class="keyword">this</span>.blackList, song.songID);
+            }
+            <span class="keyword">this</span>.sync();
+        },
+        contains: <span class="function"><span class="keyword">function</span> <span class="params">(song)</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.blackList.indexOf(song.songID) !== -<span class="number">1</span>;
+        },
+        sync: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            localStorage.blackList = JSON.stringify(<span class="keyword">this</span>.blackList);
+        }
+    };</pre></div></div>
             
         </li>
         
@@ -110,7 +111,7 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	_.extend(BlackList.prototype, blackListMethods);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    _.extend(BlackList.prototype, blackListMethods);</pre></div></div>
             
         </li>
         
@@ -126,12 +127,12 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> BlackListDaemon = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			<span class="keyword">this</span>.blackList = <span class="keyword">new</span> BlackList();
-			G.setSongStatusCallback(_.bind(<span class="keyword">this</span>.filterBlackList, <span class="keyword">this</span>));
-	};
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> BlackListDaemon = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">this</span>.blackList = <span class="keyword">new</span> BlackList();
+        G.setSongStatusCallback(_.bind(<span class="keyword">this</span>.filterBlackList, <span class="keyword">this</span>));
+    };
 
-	<span class="keyword">var</span> blackListDaemonMethods = {</pre></div></div>
+    <span class="keyword">var</span> blackListDaemonMethods = {</pre></div></div>
             
         </li>
         
@@ -146,9 +147,9 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		filterBlackList: <span class="function"><span class="keyword">function</span><span class="params">(currentSong)</span> {</span>
-			<span class="keyword">var</span> song = currentSong.song,
-				status = currentSong.status;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        filterBlackList: <span class="function"><span class="keyword">function</span> <span class="params">(currentSong)</span> {</span>
+            <span class="keyword">var</span> song = currentSong.song,
+                status = currentSong.status;</pre></div></div>
             
         </li>
         
@@ -163,7 +164,7 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="keyword">if</span>(song &amp;&amp; status === <span class="string">"loading"</span> &amp;&amp; <span class="keyword">this</span>.blackList.contains(song)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (song &amp;&amp; status === <span class="string">"loading"</span> &amp;&amp; <span class="keyword">this</span>.blackList.contains(song)) {</pre></div></div>
             
         </li>
         
@@ -178,15 +179,15 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				G.removeCurrentSongFromQueue();
-			}
-		}
-	};
+            <div class="content"><div class='highlight'><pre>                G.removeCurrentSongFromQueue();
+            }
+        }
+    };
 
-	_.extend(BlackListDaemon.prototype, blackListDaemonMethods);
+    _.extend(BlackListDaemon.prototype, blackListDaemonMethods);
 
 
-	<span class="keyword">var</span> BlackListDaemon = <span class="keyword">new</span> BlackListDaemon();</pre></div></div>
+    <span class="keyword">var</span> BlackListDaemon = <span class="keyword">new</span> BlackListDaemon();</pre></div></div>
             
         </li>
         
@@ -201,7 +202,7 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> externalPublicApi = {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> externalPublicApi = {</pre></div></div>
             
         </li>
         
@@ -218,9 +219,11 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		addSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span><span class="params">(songID)</span> {</span>
-			<span class="keyword">this</span>.blackList.add({ <span class="string">"songID"</span>: songID });
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        addSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span> <span class="params">(songID)</span> {</span>
+            <span class="keyword">this</span>.blackList.add({
+                <span class="string">"songID"</span>: songID
+            });
+        },</pre></div></div>
             
         </li>
         
@@ -237,9 +240,9 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getSongsInBlackList: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-			<span class="keyword">return</span> <span class="keyword">this</span>.blackList.get();
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        getSongsInBlackList: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.blackList.get();
+        },</pre></div></div>
             
         </li>
         
@@ -256,10 +259,12 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		removeSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span><span class="params">(songID)</span> {</span>
-			<span class="keyword">this</span>.blackList.remove({ <span class="string">"songID"</span>: songID });
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        removeSongInBlackListFromSongID: <span class="function"><span class="keyword">function</span> <span class="params">(songID)</span> {</span>
+            <span class="keyword">this</span>.blackList.remove({
+                <span class="string">"songID"</span>: songID
+            });
+        }
+    };</pre></div></div>
             
         </li>
         
@@ -274,10 +279,10 @@ Grooveshark page :S. Futhermore, it&#39;s simpler than use a collection.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	_.each(externalPublicApi, <span class="function"><span class="keyword">function</span><span class="params">(func, funcName)</span> {</span>
-		externalPublicApi[funcName] = _.bind(func, BlackListDaemon);
-	});
-	_.extend(Grooveshark, externalPublicApi);
+            <div class="content"><div class='highlight'><pre>    _.each(externalPublicApi, <span class="function"><span class="keyword">function</span> <span class="params">(func, funcName)</span> {</span>
+        externalPublicApi[funcName] = _.bind(func, BlackListDaemon);
+    });
+    _.extend(Grooveshark, externalPublicApi);
 })(Grooveshark, _);</pre></div></div>
             
         </li>
