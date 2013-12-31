@@ -197,8 +197,9 @@
             
             <div class="content"><div class='highlight'><pre>        _toogleButtons: <span class="function"><span class="keyword">function</span> <span class="params">($button)</span> {</span>
             <span class="keyword">var</span> $banIcon = $button.find(<span class="string">".icon"</span>),
-                classToRemove = $banIcon.hasClass(iconBanClass) ? iconBanClass : iconAllowClass,
-                classToAdd = $banIcon.hasClass(iconAllowClass) ? iconAllowClass : iconBanClass;
+                hasBanIcon = $banIcon.hasClass(iconBanClass),
+                classToRemove = hasBanIcon ? iconBanClass : iconAllowClass,
+                classToAdd = hasBanIcon ? iconAllowClass : iconBanClass;
 
             $banIcon.removeClass(classToRemove);
             $banIcon.addClass(classToAdd);

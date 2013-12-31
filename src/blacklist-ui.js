@@ -54,8 +54,9 @@
         //Auxiliar function to modify the button apparence
         _toogleButtons: function ($button) {
             var $banIcon = $button.find(".icon"),
-                classToRemove = $banIcon.hasClass(iconBanClass) ? iconBanClass : iconAllowClass,
-                classToAdd = $banIcon.hasClass(iconAllowClass) ? iconAllowClass : iconBanClass;
+                hasBanIcon = $banIcon.hasClass(iconBanClass),
+                classToRemove = hasBanIcon ? iconBanClass : iconAllowClass,
+                classToAdd = hasBanIcon ? iconAllowClass : iconBanClass;
 
             $banIcon.removeClass(classToRemove);
             $banIcon.addClass(classToAdd);
