@@ -26,6 +26,19 @@ module.exports = function(grunt) {
 				src: "dist/blacklist-grooveshark.js",
 				dest: "dist/blacklist-grooveshark.min.js"
 			}
+		},
+		jasmine: {
+			test: {
+				src: "src/blacklist-api.js",
+				options: {
+					specs: "tests/specs/**/*.js",
+					vendor: "tests/vendor/**/*.js",
+					helpers: "tests/helpers/**/*.js",
+					outfile: "tests/_SpecRunner.html",
+					keepRunner: true
+				},
+
+			}
 		}
 	});
 
@@ -33,9 +46,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-jasmine");
 
 	//dev
 	grunt.registerTask("default", ["clean:docs", "docco:docs"]);
 	//prod
 	grunt.registerTask("prod", ["clean:prod", "concat", "uglify:prod"]);
+	//tests
+	grunt.registerTask("test", ["jasmine"]);
 };
