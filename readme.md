@@ -1,4 +1,4 @@
-#Blacklist for Grooveshark
+#Blacklist for Grooveshark [![Build Status](https://travis-ci.org/frankcortes/blacklist-for-grooveshark.svg)](https://travis-ci.org/frankcortes/blacklist-for-grooveshark)
 
 ##Why?
 
