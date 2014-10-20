@@ -1,4 +1,4 @@
-#Blacklist for Grooveshark [![Build Status](https://travis-ci.org/frankcortes/blacklist-for-grooveshark.svg)](https://travis-ci.org/frankcortes/blacklist-for-grooveshark)
+#Blacklist for Grooveshark [![Build Status](https://travis-ci.org/frankcortes/blacklist-for-grooveshark.svg)](https://travis-ci.org/frankcortes/blacklist-for-grooveshark)[![devDependency Status](https://david-dm.org/frankcortes/blacklist-for-grooveshark/dev-status.svg)](https://david-dm.org/frankcortes/blacklist-for-grooveshark#info=devDependencies)
 
 ##Why?
 
